@@ -29,3 +29,19 @@ class ImageResoration:
     
     def showmask(self):
         plt.imshow(mask)
+        
+    def __analyzemask(self, m):
+        Dind=[]
+        for i in range(shape(m)[0]):
+            for j in range(shape(m)[1]):
+                if m[i, j]!=0:
+                    Dind.append([i, j])
+        return Dind
+                    
+#    def __Euler(self, u, D, h, a):
+#        
+#        for i in range(shape(u)[0]):
+#            for j in range(shape(u)[1]):
+#                u[i, j]+=D*h/a**2*(u[i-1, j]+u[i+1, j]+u[i, j-1]+u[i, j+1]-(4-B)*u[i,j])
+# 
+#       return u
