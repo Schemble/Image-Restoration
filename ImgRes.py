@@ -38,62 +38,64 @@ class ImageRestoration:
         plt.figure()
         plt.imshow(self.original, cmap='gray')
         
-    def analyzemask(self, m, S):
+    def __analyzemask(self, m, S):
         if S==True:
-            s=[]
-            k=1
+            
             '''
             Work in process
             '''
-            
+            t1=time.process_time()
             s=where(m!=255)
             
             s=array(s).T
-            print(s)
+            t2=time.process_time()-t1
+
             #sM=repeat(s[:, newaxis], len(s), axis=1)
             #print(sM)
             '''
             '''
+#            s=[]
 #            for i in range(shape(m)[0]):
 #                for j in range(shape(m)[1]):
 #                    if m[i, j]!=255:
 #                        s.append([i, j])
+#                    
 #                    k+=1
-            
+            print(time.process_time()-t2)
             A=zeros([len(s), len(s)])
             b=zeros([len(s)])
             '''
             '''
             
-            #diff=sM-s[:,None]
-            print(diff)
-            #A[where(sum(diff*diff, axis=1)==1)]=1
-            print('woohoo')
-#            for n, i in enumerate(s):
-#                A[n, n]=-4
-#                A[n,where(sum((s-s[n])*((s-s[n])), axis=1)==1)]=1
-#                #print(n)
+#            #diff=sM-s[:,None]
+#            print(diff)
+#            #A[where(sum(diff*diff, axis=1)==1)]=1
+#            print('woohoo')
+##            for n, i in enumerate(s):
+##                A[n, n]=-4
+##                A[n,where(sum((s-s[n])*((s-s[n])), axis=1)==1)]=1
+##                #print(n)
 
             '''
             '''
-#            for n, i in enumerate(s):
-#                A[n, n]=-4
-#                if ((s==i+[1,0]).all(axis=1)).any():
-#                    A[n, where((s==i+[1,0]).all(axis=1))]=1
-#                else:
-#                    b[n]-=self.image[i[0]+1, i[1]]
-#                if ((s==i-[1,0]).all(axis=1)).any():
-#                    A[n, where((s==i-[1,0]).all(axis=1))]=1
-#                else:
-#                    b[n]-=self.image[i[0]-1, i[1]]
-#                if ((s==i+[0,1]).all(axis=1)).any():
-#                    A[n, where((s==i+[0,1]).all(axis=1))]=1
-#                else:
-#                    b[n]-=self.image[i[0],i[1]+1]
-#                if ((s==i-[0,1]).all(axis=1)).any():
-#                    A[n, where((s==i-[0,1]).all(axis=1))]=1
-#                else:
-#                    b[n]-=self.image[i[0], i[1]-1]
+            for n, i in enumerate(s):
+                A[n, n]=-4
+                if ((s==i+[1,0]).all(axis=1)).any():
+                    A[n, where((s==i+[1,0]).all(axis=1))]=1
+                else:
+                    b[n]-=self.image[i[0]+1, i[1]]
+                if ((s==i-[1,0]).all(axis=1)).any():
+                    A[n, where((s==i-[1,0]).all(axis=1))]=1
+                else:
+                    b[n]-=self.image[i[0]-1, i[1]]
+                if ((s==i+[0,1]).all(axis=1)).any():
+                    A[n, where((s==i+[0,1]).all(axis=1))]=1
+                else:
+                    b[n]-=self.image[i[0],i[1]+1]
+                if ((s==i-[0,1]).all(axis=1)).any():
+                    A[n, where((s==i-[0,1]).all(axis=1))]=1
+                else:
+                    b[n]-=self.image[i[0], i[1]-1]
             print('A done:', time.process_time()-t0)
             return s, matrix(A), b
         else:
@@ -162,10 +164,11 @@ class ImageRestoration:
         
         
 t0=time.process_time()
-imgres=ImageRestoration('flower_original.jpg', 'flower_destroyed.jpg','flower_mask1.jpg')
+imgres=ImageRestoration('bird_original.jpg', 'bird_broad.jpg','bird_maskbroad.jpg')
+
+#imgres=ImageRestoration('flower_original.jpg', 'flower_destroyed.jpg','flower_mask1.jpg')
 #imgres.showimage()
-imgres.analyzemask(imgres.mask,1)
-#imgres.Restore('CN')
+imgres.Restore('CN')
 print('All done:',time.process_time()-t0)
 #CN=imgres.image
 #imgres=ImageRestoration('bird_original.jpg', 'bird_broad.jpg','bird_maskbroad.jpg')
